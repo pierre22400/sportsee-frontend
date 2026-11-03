@@ -1,19 +1,18 @@
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
+/**
+ * Affiche le tableau de bord et permet la déconnexion.
+ * L'accès à cette page est contrôlé par ProtectedLayout.
+ */
 export default function Dashboard() {
-  /** Affiche le tableau de bord uniquement si la session est active. */
-  const isAuthenticated =
-    sessionStorage.getItem("sportsee-authenticated") === "true";
   const navigate = useNavigate();
+
   /** Supprime la session simulée et redirige vers la connexion. */
   function handleLogout() {
     sessionStorage.removeItem("sportsee-authenticated");
     navigate("/login", { replace: true });
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
   return (
     <>
       <h1>Tableau de bord</h1>
