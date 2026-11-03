@@ -6,8 +6,8 @@ import { Outlet, Navigate } from "react-router";
  * Affiche la route enfant avec Outlet sinon.
  */
 export default function ProtectedLayout() {
-   const isAuthenticated =
-    sessionStorage.getItem("sportsee-authenticated") === "true";
+const token = sessionStorage.getItem("sportsee-token");
+const isAuthenticated = Boolean(token);
 
       if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

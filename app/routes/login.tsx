@@ -6,7 +6,7 @@ export default function Login() {
 
   /** Simule une connexion et ouvre le tableau de bord. */
   function handleLogin() {
-    sessionStorage.setItem("sportsee-authenticated", "true");
+   sessionStorage.setItem("sportsee-token", "token-demo-sportsee");
     navigate("/dashboard");
   }
 

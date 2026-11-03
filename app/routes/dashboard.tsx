@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   /** Supprime la session simulée et redirige vers la connexion. */
   function handleLogout() {
-    sessionStorage.removeItem("sportsee-authenticated");
+    sessionStorage.removeItem("sportsee-token");
     navigate("/login", { replace: true });
   }
 
