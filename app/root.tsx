@@ -1,3 +1,5 @@
+import AuthProvider from "./context/AuthProvider";
+import AuthStatus from "./components/AuthStatus";
 import {
   isRouteErrorResponse,
   Links,
@@ -41,8 +43,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Affiche les routes de SportSee dans le contexte d'authentification.
+ */
 export default function App() {
-  return <Outlet />;
+  return (
+    <AuthProvider>
+      <AuthStatus />
+      <Outlet />
+    </AuthProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
