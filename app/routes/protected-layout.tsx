@@ -10,11 +10,12 @@ import { AuthContext } from "../context/AuthContext";
 export default function ProtectedLayout() {
 
 const auth = useContext(AuthContext);
-const isAuthenticated = Boolean(auth.token);
 
 if (auth === null) {
   throw new Error("AuthProvider manquant");
 }
+
+const isAuthenticated = Boolean(auth.token);
 
       if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
