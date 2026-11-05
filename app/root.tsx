@@ -1,5 +1,5 @@
 import AuthProvider from "./context/AuthProvider";
-import AuthStatus from "./components/AuthStatus";
+
 import {
   isRouteErrorResponse,
   Links,
@@ -49,7 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
-      <AuthStatus />
+     
       <Outlet />
     </AuthProvider>
   );

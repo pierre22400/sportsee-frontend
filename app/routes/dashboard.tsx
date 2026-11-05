@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * Affiche le tableau de bord et permet la déconnexion.
@@ -6,10 +8,15 @@ import { useNavigate } from "react-router";
  */
 export default function Dashboard() {
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+
+  if (auth === null) {
+    throw new Error("AuthProvider manquant");
+  }
 
   /** Supprime la session simulée et redirige vers la connexion. */
   function handleLogout() {
-    sessionStorage.removeItem("sportsee-token");
+    auth.logout();
     navigate("/login", { replace: true });
   }
 

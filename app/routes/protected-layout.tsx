@@ -1,4 +1,6 @@
 import { Outlet, Navigate } from "react-router";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * Protège les routes enfants en vérifiant la session.
@@ -6,8 +8,13 @@ import { Outlet, Navigate } from "react-router";
  * Affiche la route enfant avec Outlet sinon.
  */
 export default function ProtectedLayout() {
-const token = sessionStorage.getItem("sportsee-token");
-const isAuthenticated = Boolean(token);
+
+const auth = useContext(AuthContext);
+const isAuthenticated = Boolean(auth.token);
+
+if (auth === null) {
+  throw new Error("AuthProvider manquant");
+}
 
       if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
