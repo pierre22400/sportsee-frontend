@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import {
@@ -90,19 +89,16 @@ function getNextMonday(monday: string): string {
 function buildWeeklyDistances(
   activities: readonly Activity[],
 ): WeeklyDistance[] {
-  const totals = activities.reduce(
-    (weeklyTotals, activity) => {
-      const monday = getMonday(activity.date);
+  const totals = activities.reduce((weeklyTotals, activity) => {
+    const monday = getMonday(activity.date);
 
-      weeklyTotals.set(
-        monday,
-        (weeklyTotals.get(monday) ?? 0) + activity.distance,
-      );
+    weeklyTotals.set(
+      monday,
+      (weeklyTotals.get(monday) ?? 0) + activity.distance,
+    );
 
-      return weeklyTotals;
-    },
-    new Map<string, number>(),
-  );
+    return weeklyTotals;
+  }, new Map<string, number>());
 
   const mondays = [...totals.keys()].sort();
 
@@ -120,9 +116,7 @@ function buildWeeklyDistances(
   while (monday <= lastMonday) {
     weeks.push({
       monday,
-      distance: Number(
-        (totals.get(monday) ?? 0).toFixed(1),
-      ),
+      distance: Number((totals.get(monday) ?? 0).toFixed(1)),
     });
 
     monday = getNextMonday(monday);
@@ -135,17 +129,12 @@ function buildWeeklyDistances(
  * Calcule la moyenne des distances des semaines visibles.
  * Retourne null si aucune semaine n'est disponible.
  */
-function getWeeklyAverage(
-  weeks: readonly WeeklyDistance[],
-): number | null {
+function getWeeklyAverage(weeks: readonly WeeklyDistance[]): number | null {
   if (weeks.length === 0) {
     return null;
   }
 
-  const total = weeks.reduce(
-    (sum, week) => sum + week.distance,
-    0,
-  );
+  const total = weeks.reduce((sum, week) => sum + week.distance, 0);
 
   return total / weeks.length;
 }
@@ -154,27 +143,18 @@ function getWeeklyAverage(
  * Formate la période du premier lundi au dernier dimanche
  * des semaines actuellement affichées.
  */
-function formatPeriod(
-  weeks: readonly WeeklyDistance[],
-): string {
+function formatPeriod(weeks: readonly WeeklyDistance[]): string {
   if (weeks.length === 0) {
     return "Aucune période";
   }
 
-  const first = new Date(
-    `${weeks[0].monday}T00:00:00Z`,
-  );
+  const first = new Date(`${weeks[0].monday}T00:00:00Z`);
 
-  const last = new Date(
-    `${weeks[weeks.length - 1].monday}T00:00:00Z`,
-  );
+  const last = new Date(`${weeks[weeks.length - 1].monday}T00:00:00Z`);
 
   last.setUTCDate(last.getUTCDate() + 6);
 
-  return (
-    `${dateFormatter.format(first)} – ` +
-    dateFormatter.format(last)
-  );
+  return `${dateFormatter.format(first)} – ` + dateFormatter.format(last);
 }
 
 /**
@@ -182,14 +162,12 @@ function formatPeriod(
  * Permet de naviguer dans une fenêtre de quatre semaines.
  */
 export default function ActivityChart() {
-  const weeklyData = buildWeeklyDistances(activityData);
-
-  const [windowStart, setWindowStart] = useState(0);
-
-  const maxStart = Math.max(
-    0,
-    weeklyData.length - WINDOW_SIZE,
+const weeklyData = buildWeeklyDistances(activityData);
+  const [windowStart, setWindowStart] = useState(() =>
+    Math.max(0, weeklyData.length - WINDOW_SIZE),
   );
+
+  const maxStart = Math.max(0, weeklyData.length - WINDOW_SIZE);
 
   const safeStart = Math.min(windowStart, maxStart);
 
@@ -203,36 +181,28 @@ export default function ActivityChart() {
   const average = getWeeklyAverage(visibleWeeks);
 
   const averageLabel =
-    average === null
-      ? "—"
-      : distanceFormatter.format(average);
+    average === null ? "—" : distanceFormatter.format(average);
 
   const periodLabel = formatPeriod(visibleWeeks);
 
   /** Recule la fenêtre d'une semaine sans dépasser le début. */
   function handlePrevious() {
-    setWindowStart((previous) =>
-      Math.max(0, previous - 1),
-    );
+    setWindowStart((previous) => Math.max(0, previous - 1));
   }
 
   /** Avance la fenêtre d'une semaine sans dépasser la fin. */
   function handleNext() {
-    setWindowStart((previous) =>
-      Math.min(maxStart, previous + 1),
-    );
+    setWindowStart((previous) => Math.min(maxStart, previous + 1));
   }
 
   return (
     <section className={styles.card}>
       <header className={styles.header}>
         <div>
-          <h2 className={styles.value}>
-            {averageLabel} km en moyenne
-          </h2>
+          <h2 className={styles.value}>{averageLabel} km en moyenne</h2>
 
           <p className={styles.subtitle}>
-            Total des kilomètres sur les semaines affichées
+            Moyenne hebdomadaire sur les quatre semaines affichées
           </p>
         </div>
 
@@ -249,10 +219,7 @@ export default function ActivityChart() {
             ‹
           </button>
 
-          <span
-            className={styles.period}
-            aria-live="polite"
-          >
+          <span className={styles.period} aria-live="polite">
             {periodLabel}
           </span>
 
@@ -270,20 +237,11 @@ export default function ActivityChart() {
       <div className={styles.chart}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={visibleWeeks}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-            />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-            <XAxis
-              dataKey="label"
-              tickLine={false}
-            />
+            <XAxis dataKey="label" tickLine={false} />
 
-            <YAxis
-              domain={[0, "auto"]}
-              tickLine={false}
-            />
+            <YAxis domain={[0, "auto"]} tickLine={false} />
 
             <Tooltip />
 
