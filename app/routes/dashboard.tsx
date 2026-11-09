@@ -13,16 +13,17 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  if (auth === null) {
-    throw new Error("AuthProvider manquant");
-  }
+if (auth === null) {
+  throw new Error("AuthProvider manquant");
+}
 
-  /** Supprime la session simulée et redirige vers la connexion. */
-  function handleLogout() {
-    auth.logout();
-    navigate("/login", { replace: true });
-  }
+const { logout } = auth;
 
+/** Supprime la session simulée et redirige vers la connexion. */
+function handleLogout() {
+  logout();
+  navigate("/login", { replace: true });
+}
   return (
     <>
       <h1>Tableau de bord</h1>

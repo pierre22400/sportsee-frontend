@@ -1,4 +1,6 @@
 
+import { useState } from "react";
+
 import {
   Bar,
   CartesianGrid,
@@ -26,10 +28,18 @@ import styles from "./HeartRateChart.module.css";
  *
  * Les données originales ne sont jamais modifiées.
  * Le graphique reste responsive.
+ *
+ * Fonctionnalités complémentaires :
+ * - regroupement des séances par journée ;
+ * - moyenne pondérée par la durée des séances ;
+ * - affichage du lundi au dimanche ;
+ * - absence de mesure représentée par null ;
+ * - navigation par semaines complètes.
  */
 
 type Activity = {
   date: string;
+  duration: number;
   heartRate: {
     min: number;
     max: number;
@@ -39,67 +49,280 @@ type Activity = {
 
 type HeartRatePoint = {
   date: string;
-  min: number;
-  max: number;
-  average: number;
+  day: string;
+  min: number | null;
+  max: number | null;
+  average: number | null;
+  duration: number;
 };
+
+const DAY_LABELS = [
+  "Lun",
+  "Mar",
+  "Mer",
+  "Jeu",
+  "Ven",
+  "Sam",
+  "Dim",
+];
+
+const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
+/**
+ * Retourne le lundi correspondant à une date ISO.
+ */
+function getMonday(isoDate: string): string {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  const daysSinceMonday = (date.getUTCDay() + 6) % 7;
+
+  date.setUTCDate(date.getUTCDate() - daysSinceMonday);
+
+  return date.toISOString().slice(0, 10);
+}
+
+/**
+ * Ajoute un nombre de jours à une date ISO,
+ * sans décalage de fuseau horaire.
+ */
+function addDays(isoDate: string, days: number): string {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+
+  date.setUTCDate(date.getUTCDate() + days);
+
+  return date.toISOString().slice(0, 10);
+}
+
+/**
+ * Construit la liste chronologique des lundis
+ * entre la première et la dernière séance.
+ */
+function buildWeekStarts(
+  activities: readonly Activity[],
+): string[] {
+  if (activities.length === 0) {
+    return [];
+  }
+
+  const mondays = activities
+    .map((activity) => getMonday(activity.date))
+    .sort();
+
+  const firstMonday = mondays[0];
+  const lastMonday = mondays[mondays.length - 1];
+
+  const weeks: string[] = [];
+
+  for (
+    let monday = firstMonday;
+    monday <= lastMonday;
+    monday = addDays(monday, 7)
+  ) {
+    weeks.push(monday);
+  }
+
+  return weeks;
+}
 
 /**
  * Prépare les données des séances pour Recharts.
  * Trie les séances par date sans modifier le tableau source.
+ *
+ * Regroupe les séances du même jour et retourne
+ * exactement sept positions, du lundi au dimanche.
  */
 function buildHeartRateData(
   activities: readonly Activity[],
+  monday: string,
 ): HeartRatePoint[] {
-  return [...activities]
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .map((activity) => ({
-      date:
-        activity.date.slice(8, 10) +
-        "/" +
-        activity.date.slice(5, 7),
-      min: activity.heartRate.min,
-      max: activity.heartRate.max,
-      average: activity.heartRate.average,
-    }));
+  const sunday = addDays(monday, 6);
+
+  const sessionsByDay = new Map<string, Activity[]>();
+
+  for (const activity of activities) {
+    if (activity.date < monday || activity.date > sunday) {
+      continue;
+    }
+
+    const sessions = sessionsByDay.get(activity.date) ?? [];
+    sessions.push(activity);
+    sessionsByDay.set(activity.date, sessions);
+  }
+
+  return DAY_LABELS.map((day, index) => {
+    const date = addDays(monday, index);
+    const sessions = sessionsByDay.get(date) ?? [];
+
+    if (sessions.length === 0) {
+      return {
+        date,
+        day,
+        min: null,
+        max: null,
+        average: null,
+        duration: 0,
+      };
+    }
+
+    const duration = sessions.reduce(
+      (sum, session) => sum + session.duration,
+      0,
+    );
+
+    const weightedTotal = sessions.reduce(
+      (sum, session) =>
+        sum +
+        session.heartRate.average * session.duration,
+      0,
+    );
+
+    return {
+      date,
+      day,
+      min: Math.min(
+        ...sessions.map((session) => session.heartRate.min),
+      ),
+      max: Math.max(
+        ...sessions.map((session) => session.heartRate.max),
+      ),
+      average:
+        duration > 0 ? weightedTotal / duration : null,
+      duration,
+    };
+  });
 }
 
 /**
  * Calcule la moyenne arithmétique des fréquences
  * cardiaques moyennes de chaque séance.
+ *
+ * Pour la nouvelle fenêtre quotidienne, utilise
+ * une pondération par la durée des séances.
+ * Retourne null lorsqu'aucune mesure n'est disponible.
  */
 function getAverageHeartRate(
   data: readonly HeartRatePoint[],
-): number {
-  if (data.length === 0) {
-    return 0;
-  }
-
-  const total = data.reduce(
-    (sum, session) => sum + session.average,
+): number | null {
+  const duration = data.reduce(
+    (sum, day) => sum + day.duration,
     0,
   );
 
-  return Math.round(total / data.length);
+  if (duration === 0) {
+    return null;
+  }
+
+  const weightedTotal = data.reduce(
+    (sum, day) =>
+      sum + (day.average ?? 0) * day.duration,
+    0,
+  );
+
+  return Math.round(weightedTotal / duration);
+}
+
+/**
+ * Formate les bornes de la semaine affichée.
+ */
+function formatPeriod(monday: string | undefined): string {
+  if (!monday) {
+    return "Aucune période";
+  }
+
+  const sunday = addDays(monday, 6);
+
+  return (
+    dateFormatter.format(new Date(`${monday}T00:00:00Z`)) +
+    " – " +
+    dateFormatter.format(new Date(`${sunday}T00:00:00Z`))
+  );
 }
 
 /**
  * Affiche une carte responsive contenant
  * les mesures cardiaques des séances.
+ *
+ * Les flèches changent de semaine complète.
  */
 export default function HeartRateChart() {
-  const data = buildHeartRateData(activityData);
+  const weekStarts = buildWeekStarts(activityData);
+
+  const [weekIndex, setWeekIndex] = useState(() =>
+    Math.max(0, weekStarts.length - 1),
+  );
+
+  const maxIndex = Math.max(0, weekStarts.length - 1);
+  const safeIndex = Math.min(weekIndex, maxIndex);
+
+  const selectedMonday = weekStarts[safeIndex];
+
+  const data = selectedMonday
+    ? buildHeartRateData(activityData, selectedMonday)
+    : [];
+
   const averageBpm = getAverageHeartRate(data);
+  const periodLabel = formatPeriod(selectedMonday);
+
+  /** Affiche la semaine précédente. */
+  function handlePrevious() {
+    setWeekIndex((previous) => Math.max(0, previous - 1));
+  }
+
+  /** Affiche la semaine suivante. */
+  function handleNext() {
+    setWeekIndex((previous) =>
+      Math.min(maxIndex, previous + 1),
+    );
+  }
 
   return (
     <section className={styles.card}>
       <header className={styles.header}>
-        <h2 className={styles.value}>
-          {data.length > 0 ? `${averageBpm} BPM` : "— BPM"}
-        </h2>
-        <p className={styles.subtitle}>
-          Fréquence cardiaque moyenne des séances
-        </p>
+        <div>
+          <h2 className={styles.value}>
+            {averageBpm === null
+              ? "— BPM"
+              : `${averageBpm} BPM`}
+          </h2>
+
+          <p className={styles.subtitle}>
+            Fréquence cardiaque moyenne des séances
+          </p>
+        </div>
+
+        <nav
+          className={styles.navigation}
+          aria-label="Navigation des semaines cardiaques"
+        >
+          <button
+            type="button"
+            onClick={handlePrevious}
+            disabled={safeIndex === 0}
+            aria-label="Semaine précédente"
+          >
+            ‹
+          </button>
+
+          <span
+            className={styles.period}
+            aria-live="polite"
+          >
+            {periodLabel}
+          </span>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            disabled={safeIndex >= maxIndex}
+            aria-label="Semaine suivante"
+          >
+            ›
+          </button>
+        </nav>
       </header>
 
       <div className={styles.chart}>
@@ -120,7 +343,7 @@ export default function HeartRateChart() {
             />
 
             <XAxis
-              dataKey="date"
+              dataKey="day"
               tickLine={false}
               axisLine={false}
             />
@@ -161,6 +384,7 @@ export default function HeartRateChart() {
               unit=" BPM"
               stroke="#1936ff"
               strokeWidth={2}
+              connectNulls={false}
               dot={{ r: 3 }}
               activeDot={{ r: 5 }}
             />
