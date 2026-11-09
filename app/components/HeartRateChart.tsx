@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import {
@@ -56,15 +55,7 @@ type HeartRatePoint = {
   duration: number;
 };
 
-const DAY_LABELS = [
-  "Lun",
-  "Mar",
-  "Mer",
-  "Jeu",
-  "Ven",
-  "Sam",
-  "Dim",
-];
+const DAY_LABELS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",
@@ -101,16 +92,12 @@ function addDays(isoDate: string, days: number): string {
  * Construit la liste chronologique des lundis
  * entre la première et la dernière séance.
  */
-function buildWeekStarts(
-  activities: readonly Activity[],
-): string[] {
+function buildWeekStarts(activities: readonly Activity[]): string[] {
   if (activities.length === 0) {
     return [];
   }
 
-  const mondays = activities
-    .map((activity) => getMonday(activity.date))
-    .sort();
+  const mondays = activities.map((activity) => getMonday(activity.date)).sort();
 
   const firstMonday = mondays[0];
   const lastMonday = mondays[mondays.length - 1];
@@ -174,23 +161,16 @@ function buildHeartRateData(
     );
 
     const weightedTotal = sessions.reduce(
-      (sum, session) =>
-        sum +
-        session.heartRate.average * session.duration,
+      (sum, session) => sum + session.heartRate.average * session.duration,
       0,
     );
 
     return {
       date,
       day,
-      min: Math.min(
-        ...sessions.map((session) => session.heartRate.min),
-      ),
-      max: Math.max(
-        ...sessions.map((session) => session.heartRate.max),
-      ),
-      average:
-        duration > 0 ? weightedTotal / duration : null,
+      min: Math.min(...sessions.map((session) => session.heartRate.min)),
+      max: Math.max(...sessions.map((session) => session.heartRate.max)),
+      average: duration > 0 ? weightedTotal / duration : null,
       duration,
     };
   });
@@ -202,21 +182,15 @@ function buildHeartRateData(
  * une pondération par la durée des séances.
  * Retourne null lorsqu'aucune mesure n'est disponible.
  */
-function getAverageHeartRate(
-  data: readonly HeartRatePoint[],
-): number | null {
-  const duration = data.reduce(
-    (sum, day) => sum + day.duration,
-    0,
-  );
+function getAverageHeartRate(data: readonly HeartRatePoint[]): number | null {
+  const duration = data.reduce((sum, day) => sum + day.duration, 0);
 
   if (duration === 0) {
     return null;
   }
 
   const weightedTotal = data.reduce(
-    (sum, day) =>
-      sum + (day.average ?? 0) * day.duration,
+    (sum, day) => sum + (day.average ?? 0) * day.duration,
     0,
   );
 
@@ -272,9 +246,7 @@ export default function HeartRateChart() {
 
   /** Affiche la semaine suivante. */
   function handleNext() {
-    setWeekIndex((previous) =>
-      Math.min(maxIndex, previous + 1),
-    );
+    setWeekIndex((previous) => Math.min(maxIndex, previous + 1));
   }
 
   return (
@@ -282,11 +254,8 @@ export default function HeartRateChart() {
       <header className={styles.header}>
         <div>
           <h2 className={styles.value}>
-            {averageBpm === null
-              ? "— BPM"
-              : `${averageBpm} BPM`}
+            {averageBpm === null ? "— BPM" : `${averageBpm} BPM`}
           </h2>
-
         </div>
 
         <p className={styles.subtitle}>
@@ -306,10 +275,7 @@ export default function HeartRateChart() {
             ‹
           </button>
 
-          <span
-            className={styles.period}
-            aria-live="polite"
-          >
+          <span className={styles.period} aria-live="polite">
             {periodLabel}
           </span>
 
@@ -341,11 +307,7 @@ export default function HeartRateChart() {
               vertical={false}
             />
 
-            <XAxis
-              dataKey="day"
-              tickLine={false}
-              axisLine={false}
-            />
+            <XAxis dataKey="day" tickLine={false} axisLine={false} />
 
             <YAxis
               domain={["dataMin - 5", "dataMax + 5"]}

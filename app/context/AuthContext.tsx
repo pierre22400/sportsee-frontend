@@ -13,5 +13,4 @@ export type AuthContextType = {
   logout: () => void;
 };
 
-export const AuthContext =
-  createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);

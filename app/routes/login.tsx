@@ -7,17 +7,17 @@ export default function Login() {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-if (auth === null) {
-  throw new Error("AuthProvider manquant");
-}
+  if (auth === null) {
+    throw new Error("AuthProvider manquant");
+  }
 
-const { login } = auth;
+  const { login } = auth;
 
-/** Simule une connexion et ouvre le tableau de bord. */
-function handleLogin() {
-  login("token-demo-sportsee");
-  navigate("/dashboard");
-}
+  /** Simule une connexion et ouvre le tableau de bord. */
+  function handleLogin() {
+    login("token-demo-sportsee");
+    navigate("/dashboard");
+  }
 
   return <button onClick={handleLogin}>Se connecter</button>;
 }

@@ -1,6 +1,6 @@
-
 import userInfo from "../mocks/userInfo.json";
 import styles from "./profile.module.css";
+import UserAvatar from "../components/UserAvatar";
 
 /**
  * SPORTSEE — PAGE PROFIL
@@ -34,12 +34,7 @@ const distanceFormatter = new Intl.NumberFormat("fr-FR", {
 export default function Profile() {
   const { profile, statistics } = userInfo;
 
-  const fullName =
-    `${profile.firstName} ${profile.lastName}`;
-
-  const initials =
-    profile.firstName.charAt(0) +
-    profile.lastName.charAt(0);
+  const fullName = `${profile.firstName} ${profile.lastName}`;
 
   const memberSince = dateFormatter.format(
     new Date(`${profile.createdAt}T00:00:00Z`),
@@ -63,17 +58,15 @@ export default function Profile() {
             aria-label="Informations personnelles"
           >
             <article className={styles.identityCard}>
-              <div
-                className={styles.avatar}
-                aria-hidden="true"
-              >
-                {initials}
-              </div>
+              <UserAvatar
+                firstName={profile.firstName}
+                lastName={profile.lastName}
+                src={profile.profilePicture}
+                variant="profile"
+              />
 
               <div>
-                <h1 className={styles.name}>
-                  {fullName}
-                </h1>
+                <h1 className={styles.name}>{fullName}</h1>
 
                 <p className={styles.memberSince}>
                   Membre depuis le {memberSince}

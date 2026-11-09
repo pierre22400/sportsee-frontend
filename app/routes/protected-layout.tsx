@@ -1,13 +1,6 @@
-
 import { useContext } from "react";
 
-import {
-  Link,
-  Navigate,
-  NavLink,
-  Outlet,
-  useNavigate,
-} from "react-router";
+import { Link, Navigate, NavLink, Outlet, useNavigate } from "react-router";
 
 import { AuthContext } from "../context/AuthContext";
 import styles from "./protected-layout.module.css";
@@ -34,10 +27,7 @@ import styles from "./protected-layout.module.css";
  */
 function SportSeeMark() {
   return (
-    <span
-      className={styles.mark}
-      aria-hidden="true"
-    >
+    <span className={styles.mark} aria-hidden="true">
       <span />
       <span />
       <span />
@@ -82,21 +72,14 @@ export default function ProtectedLayout() {
             aria-label="SportSee - Tableau de bord"
           >
             <SportSeeMark />
-            <span>
-              SPORTSEE
-            </span>
+            <span>SPORTSEE</span>
           </Link>
 
-          <nav
-            className={styles.navigation}
-            aria-label="Navigation principale"
-          >
+          <nav className={styles.navigation} aria-label="Navigation principale">
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                isActive
-                  ? `${styles.navLink} ${styles.active}`
-                  : styles.navLink
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
             >
               Dashboard
@@ -105,18 +88,13 @@ export default function ProtectedLayout() {
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                isActive
-                  ? `${styles.navLink} ${styles.active}`
-                  : styles.navLink
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
             >
               Mon profil
             </NavLink>
 
-            <span
-              className={styles.separator}
-              aria-hidden="true"
-            />
+            <span className={styles.separator} aria-hidden="true" />
 
             <button
               type="button"
@@ -135,18 +113,12 @@ export default function ProtectedLayout() {
 
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
-          <p className={styles.copyright}>
-            © SportSee — Tous droits réservés
-          </p>
+          <p className={styles.copyright}>© SportSee — Tous droits réservés</p>
 
           <div className={styles.footerRight}>
-            <span>
-              Conditions générales
-            </span>
+            <span>Conditions générales</span>
 
-            <span>
-              Contact
-            </span>
+            <span>Contact</span>
 
             <span className={styles.footerMark}>
               <SportSeeMark />

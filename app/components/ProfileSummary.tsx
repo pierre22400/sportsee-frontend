@@ -1,7 +1,6 @@
-import { useState } from "react";
-
 import userInfo from "../mocks/userInfo.json";
 import styles from "./ProfileSummary.module.css";
+import UserAvatar from "./UserAvatar";
 
 /**
  * SPORTSEE — FICHE PROFIL DU TABLEAU DE BORD
@@ -32,12 +31,10 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
  * si l'image du service de démonstration est indisponible.
  */
 export default function ProfileSummary() {
-  const [imageFailed, setImageFailed] = useState(false);
   const { profile, statistics } = userInfo;
 
   const fullName = `${profile.firstName} ${profile.lastName}`;
-  const initials =
-    profile.firstName.charAt(0) + profile.lastName.charAt(0);
+  const initials = profile.firstName.charAt(0) + profile.lastName.charAt(0);
   const memberSince = dateFormatter.format(
     new Date(`${profile.createdAt}T00:00:00Z`),
   );
@@ -46,46 +43,24 @@ export default function ProfileSummary() {
     ? distanceFormatter.format(totalDistance)
     : "—";
 
-  /** Remplace la photo inaccessible par les initiales. */
-  function handleImageError() {
-    setImageFailed(true);
-  }
-
   return (
-    <section
-      className={styles.card}
-      aria-label="Résumé du profil sportif"
-    >
-      <div className={styles.avatar}>
-        <span className={styles.avatarFallback} aria-hidden="true">
-          {initials}
-        </span>
-
-        {!imageFailed && (
-          <img
-            className={styles.avatarImage}
-            src={profile.profilePicture}
-            alt={`Portrait de ${fullName}`}
-            onError={handleImageError}
-          />
-        )}
-      </div>
+    <section className={styles.card} aria-label="Résumé du profil sportif">
+      <UserAvatar
+        firstName={profile.firstName}
+        lastName={profile.lastName}
+        src={profile.profilePicture}
+        variant="dashboard"
+      />
 
       <div className={styles.identity}>
         <h2 className={styles.name}>{fullName}</h2>
-        <p className={styles.memberSince}>
-          Membre depuis le {memberSince}
-        </p>
+        <p className={styles.memberSince}>Membre depuis le {memberSince}</p>
       </div>
 
       <div className={styles.distance}>
-        <span className={styles.distanceLabel}>
-          Distance totale parcourue
-        </span>
+        <span className={styles.distanceLabel}>Distance totale parcourue</span>
 
-        <strong className={styles.distanceValue}>
-          {distanceLabel} km
-        </strong>
+        <strong className={styles.distanceValue}>{distanceLabel} km</strong>
       </div>
     </section>
   );

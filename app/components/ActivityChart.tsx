@@ -162,7 +162,7 @@ function formatPeriod(weeks: readonly WeeklyDistance[]): string {
  * Permet de naviguer dans une fenêtre de quatre semaines.
  */
 export default function ActivityChart() {
-const weeklyData = buildWeeklyDistances(activityData);
+  const weeklyData = buildWeeklyDistances(activityData);
   const [windowStart, setWindowStart] = useState(() =>
     Math.max(0, weeklyData.length - WINDOW_SIZE),
   );
@@ -200,7 +200,6 @@ const weeklyData = buildWeeklyDistances(activityData);
       <header className={styles.header}>
         <div>
           <h2 className={styles.value}>{averageLabel} km en moyenne</h2>
-
         </div>
 
         <p className={styles.subtitle}>
