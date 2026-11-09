@@ -9,14 +9,17 @@
 }
 
 .header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 12px;
   margin-bottom: 24px;
 }
 
+.header > div {
+  min-width: 0;
+}
 .value {
   margin: 0;
   color: #1738ff;
@@ -34,6 +37,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-self: end;
 }
 
 .navigation button {
@@ -79,5 +83,21 @@
 
   .chart {
     height: 280px;
+  }
+}
+
+@media (max-width: 1250px) {
+  .header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .navigation {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 600px) {
+  .navigation {
+    justify-self: start;
   }
 }
