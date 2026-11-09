@@ -9,3 +9,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.weeklySummary {
+  margin-top: 24px;
+}
