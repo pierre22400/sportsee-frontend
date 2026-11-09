@@ -1,0 +1,171 @@
+
+/*
+ * SPORTSEE — PAGE PROFIL
+ *
+ * Mise en page responsive inspirée de Figma.
+ * Deux colonnes sur ordinateur et une sur mobile.
+ * Styles isolés du Dashboard par CSS Modules.
+ */
+
+.page {
+  min-height: 100vh;
+  background-color: #f1f2ff;
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 72px 24px 80px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: 44px;
+}
+
+.leftColumn {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.identityCard,
+.detailsCard {
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.identityCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 128px;
+}
+
+.avatar {
+  display: flex;
+  flex: 0 0 80px;
+  width: 80px;
+  height: 90px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #e3e8ff;
+  color: #1738ff;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.name {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.memberSince {
+  margin: 0;
+  color: #737373;
+  font-size: 13px;
+}
+
+.detailsCard h2,
+.statsHeader h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.details {
+  display: grid;
+  gap: 16px;
+  margin: 20px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid #eeeeee;
+}
+
+.details > div {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.details dt {
+  color: #737373;
+}
+
+.details dt::after {
+  content: " :";
+}
+
+.details dd {
+  margin: 0;
+}
+
+.statsHeader {
+  margin-bottom: 22px;
+}
+
+.statsHeader p {
+  margin: 6px 0 0;
+  color: #737373;
+  font-size: 13px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 112px;
+  padding: 20px;
+  background-color: #1738ff;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.statCard h3 {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.statCard p {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 32px 16px 48px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .identityCard {
+    padding: 20px;
+  }
+
+  .statCard {
+    min-height: 95px;
+  }
+}
