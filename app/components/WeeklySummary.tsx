@@ -1,10 +1,4 @@
-
-import {
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-} from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import activityData from "../mocks/activity.json";
 import styles from "./WeeklySummary.module.css";
@@ -83,9 +77,7 @@ function addDays(isoDate: string, days: number): string {
  * Retourne des statistiques vides en l'absence
  * de séances.
  */
-function buildWeeklyStats(
-  activities: readonly Activity[],
-): WeeklyStats {
+function buildWeeklyStats(activities: readonly Activity[]): WeeklyStats {
   if (activities.length === 0) {
     return {
       monday: null,
@@ -96,8 +88,7 @@ function buildWeeklyStats(
   }
 
   const latestDate = activities.reduce(
-    (latest, activity) =>
-      activity.date > latest ? activity.date : latest,
+    (latest, activity) => (activity.date > latest ? activity.date : latest),
     "",
   );
 
@@ -105,8 +96,7 @@ function buildWeeklyStats(
   const sunday = addDays(monday, 6);
 
   const weeklyActivities = activities.filter(
-    (activity) =>
-      activity.date >= monday && activity.date <= sunday,
+    (activity) => activity.date >= monday && activity.date <= sunday,
   );
 
   return {
@@ -162,10 +152,7 @@ export default function WeeklySummary() {
   const stats = buildWeeklyStats(activityData);
 
   const completed = Math.min(stats.sessions, WEEKLY_GOAL);
-  const remaining = Math.max(
-    0,
-    WEEKLY_GOAL - completed,
-  );
+  const remaining = Math.max(0, WEEKLY_GOAL - completed);
 
   const chartData = [
     { name: "Réalisées", value: completed },
@@ -173,74 +160,89 @@ export default function WeeklySummary() {
   ];
 
   return (
-    <section className={styles.card}>
-      <header>
+    <section className={styles.summary}>
+      <header className={styles.heading}>
         <h2 className={styles.title}>Cette semaine</h2>
 
         <p className={styles.subtitle}>
-          Historique de démonstration :{" "}
-          {formatPeriod(stats.monday)}
+          Historique de démonstration : {formatPeriod(stats.monday)}
         </p>
       </header>
 
       <div className={styles.content}>
-        <div
-          className={styles.donut}
-          role="img"
-          aria-label={
-            `${stats.sessions} courses réalisées, ` +
-            `objectif illustratif de ${WEEKLY_GOAL}`
-          }
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                dataKey="value"
-                innerRadius={62}
-                outerRadius={82}
-                startAngle={90}
-                endAngle={-270}
-                stroke="none"
-                isAnimationActive={false}
-              >
-                <Cell fill="#1738FF" />
-                <Cell fill="#DCE1FF" />
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
+        {/* Carte 1 : objectif hebdomadaire */}
+        <div className={`${styles.card} ${styles.goalCard}`}>
+          <p className={styles.goalValue}>
+            <strong>×{stats.sessions}</strong>
+            <span> sur un objectif de {WEEKLY_GOAL}</span>
+          </p>
 
-          <div className={styles.donutCenter}>
-            <strong>
-              {stats.sessions} / {WEEKLY_GOAL}
-            </strong>
-            <span>courses</span>
-          </div>
-        </div>
+          <p className={styles.goalDescription}>
+            Courses hebdomadaires réalisées
+          </p>
 
-        <div className={styles.stats}>
-          <div>
-            <p className={styles.label}>
-              Distance parcourue
-            </p>
-            <p className={styles.value}>
-              {distanceFormatter.format(stats.distance)} km
-            </p>
+          <div
+            className={styles.donut}
+            role="img"
+            aria-label={
+              `${stats.sessions} courses réalisées, ` +
+              `objectif illustratif de ${WEEKLY_GOAL}`
+            }
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  dataKey="value"
+                  innerRadius={62}
+                  outerRadius={82}
+                  startAngle={90}
+                  endAngle={-270}
+                  stroke="none"
+                  isAnimationActive={false}
+                >
+                  <Cell fill="#1738FF" />
+                  <Cell fill="#DCE1FF" />
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
-          <div>
-            <p className={styles.label}>
-              Durée totale
-            </p>
-            <p className={styles.value}>
-              {formatDuration(stats.duration)}
-            </p>
+          <div className={styles.legend} aria-hidden="true">
+            <span>
+              <span className={styles.doneDot} />
+              {stats.sessions} réalisées
+            </span>
+
+            <span>
+              <span className={styles.remainingDot} />
+              {remaining} restantes
+            </span>
           </div>
 
           <p className={styles.note}>
-            Objectif de {WEEKLY_GOAL} courses :
-            valeur provisoire de la maquette.
+            Objectif de {WEEKLY_GOAL} courses : valeur provisoire de la
+            maquette.
           </p>
+        </div>
+
+        {/* Cartes 2 et 3 : statistiques */}
+        <div className={styles.stats}>
+          <article className={styles.statCard}>
+            <p className={styles.label}>Durée d'activité</p>
+
+            <p className={styles.durationValue}>
+              {formatDuration(stats.duration)}
+            </p>
+          </article>
+
+          <article className={styles.statCard}>
+            <p className={styles.label}>Distance</p>
+
+            <p className={styles.distanceValue}>
+              {distanceFormatter.format(stats.distance)} km
+            </p>
+          </article>
         </div>
       </div>
     </section>

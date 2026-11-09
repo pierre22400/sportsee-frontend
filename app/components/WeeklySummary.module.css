@@ -21,10 +21,10 @@
 }
 
 .content {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  margin-top: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: stretch;
 }
 
 .donut {
@@ -57,7 +57,9 @@
 
 .stats {
   display: grid;
-  gap: 20px;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
 }
 
 .label {
@@ -95,5 +97,120 @@
 
   .stats {
     width: 100%;
+  }
+}
+
+.summary {
+  width: 100%;
+  min-width: 0;
+}
+
+.heading {
+  margin-bottom: 24px;
+}
+
+.goalCard {
+  min-height: 350px;
+  border: 1px solid #eceeff;
+}
+
+.goalValue {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.goalValue strong {
+  color: #1738ff;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.goalValue span {
+  color: #a3adff;
+  font-size: 15px;
+}
+
+.goalDescription {
+  margin: 8px 0 0;
+  color: #737373;
+  font-size: 13px;
+}
+
+.donut {
+  flex-basis: auto;
+  width: 200px;
+  height: 200px;
+  margin: 18px auto 12px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  color: #737373;
+  font-size: 12px;
+}
+
+.legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.doneDot,
+.remainingDot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.doneDot {
+  background-color: #1738ff;
+}
+
+.remainingDot {
+  background-color: #b6bfff;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 140px;
+  padding: 24px 30px;
+  background-color: #ffffff;
+  border: 1px solid #eceeff;
+  border-radius: 12px;
+}
+
+.durationValue,
+.distanceValue {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.durationValue {
+  color: #1738ff;
+}
+
+.distanceValue {
+  color: #f23617;
+}
+
+@media (max-width: 800px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-rows: auto;
   }
 }
