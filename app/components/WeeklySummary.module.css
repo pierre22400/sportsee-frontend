@@ -1,0 +1,102 @@
+
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 32px 28px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #737373;
+  font-size: 13px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-top: 24px;
+}
+
+.donut {
+  position: relative;
+  flex: 0 0 220px;
+  width: 220px;
+  height: 220px;
+}
+
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.donutCenter strong {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.donutCenter span {
+  margin-top: 4px;
+  color: #737373;
+  font-size: 13px;
+}
+
+.stats {
+  display: grid;
+  gap: 20px;
+}
+
+.label {
+  margin: 0 0 6px;
+  color: #737373;
+  font-size: 13px;
+}
+
+.value {
+  margin: 0;
+  color: #1738ff;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.note {
+  margin: 0;
+  color: #737373;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 24px 16px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .donut {
+    flex-basis: auto;
+  }
+
+  .stats {
+    width: 100%;
+  }
+}
+.weeklySummary {
+  margin-top: 24px;
+}

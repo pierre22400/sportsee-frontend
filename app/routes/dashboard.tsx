@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import ActivityChart from "../components/ActivityChart";
 import HeartRateChart from "../components/HeartRateChart";
 import styles from "./dashboard.module.css";
+import WeeklySummary from "../components/WeeklySummary";
 
 /**
  * Affiche le tableau de bord et permet la déconnexion.
@@ -27,9 +28,14 @@ function handleLogout() {
   return (
     <>
       <h1>Tableau de bord</h1>
+
 <div className={styles.chartsGrid}>
   <ActivityChart />
   <HeartRateChart />
+</div>
+
+<div className={styles.weeklySummary}>
+  <WeeklySummary />
 </div>
       <button onClick={handleLogout}>Se déconnecter</button>
     </>
