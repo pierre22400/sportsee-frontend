@@ -197,9 +197,7 @@ function buildHeartRateData(
 }
 
 /**
- * Calcule la moyenne arithmétique des fréquences
- * cardiaques moyennes de chaque séance.
- *
+
  * Pour la nouvelle fenêtre quotidienne, utilise
  * une pondération par la durée des séances.
  * Retourne null lorsqu'aucune mesure n'est disponible.
