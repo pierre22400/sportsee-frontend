@@ -201,10 +201,11 @@ const weeklyData = buildWeeklyDistances(activityData);
         <div>
           <h2 className={styles.value}>{averageLabel} km en moyenne</h2>
 
-          <p className={styles.subtitle}>
-            Moyenne hebdomadaire sur les quatre semaines affichées
-          </p>
         </div>
+
+        <p className={styles.subtitle}>
+          Moyenne hebdomadaire sur les quatre semaines affichées
+        </p>
 
         <nav
           className={styles.navigation}

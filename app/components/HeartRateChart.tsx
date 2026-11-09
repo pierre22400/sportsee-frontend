@@ -287,10 +287,11 @@ export default function HeartRateChart() {
               : `${averageBpm} BPM`}
           </h2>
 
-          <p className={styles.subtitle}>
-            Fréquence cardiaque moyenne des séances
-          </p>
         </div>
+
+        <p className={styles.subtitle}>
+          Fréquence cardiaque moyenne des séances
+        </p>
 
         <nav
           className={styles.navigation}
