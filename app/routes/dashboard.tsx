@@ -25,19 +25,32 @@ function handleLogout() {
   logout();
   navigate("/login", { replace: true });
 }
-  return (
-    <>
-      <h1>Tableau de bord</h1>
 
-<div className={styles.chartsGrid}>
-  <ActivityChart />
-  <HeartRateChart />
-</div>
+return (
+  <main className={styles.page}>
+    <div className={styles.container}>
+      <h1 className={styles.sectionTitle}>
+        Vos dernières performances
+      </h1>
 
-<div className={styles.weeklySummary}>
-  <WeeklySummary />
-</div>
-      <button onClick={handleLogout}>Se déconnecter</button>
-    </>
-  );
+      <div className={styles.chartsGrid}>
+        <ActivityChart />
+        <HeartRateChart />
+      </div>
+
+      <div className={styles.weeklySummary}>
+        <WeeklySummary />
+      </div>
+
+      <button
+        type="button"
+        className={styles.logoutButton}
+        onClick={handleLogout}
+      >
+        Se déconnecter
+      </button>
+    </div>
+  </main>
+);
+
 }

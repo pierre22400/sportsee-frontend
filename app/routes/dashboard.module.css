@@ -11,5 +11,51 @@
 }
 
 .weeklySummary {
-  margin-top: 24px;
+  margin-top: 56px;
+}
+
+.page {
+  min-height: 100vh;
+  background-color: #f1f2ff;
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.sectionTitle {
+  margin: 0 0 28px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #171717;
+}
+
+.logoutButton {
+  margin-top: 32px;
+  padding: 8px 14px;
+  border: 1px solid #d6d9ee;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1738ff;
+  cursor: pointer;
+}
+
+.logoutButton:focus-visible {
+  outline: 3px solid #1738ff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px 40px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
 }
