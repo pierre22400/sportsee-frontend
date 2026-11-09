@@ -59,3 +59,19 @@
     margin-bottom: 20px;
   }
 }
+
+.profileSection {
+  margin-bottom: 96px;
+}
+
+@media (max-width: 900px) {
+  .profileSection {
+    margin-bottom: 64px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profileSection {
+    margin-bottom: 40px;
+  }
+}
