@@ -1,4 +1,3 @@
-
 import ActivityChart from "../components/ActivityChart";
 import HeartRateChart from "../components/HeartRateChart";
 import ProfileSummary from "../components/ProfileSummary";
@@ -18,43 +17,24 @@ import WeeklySummary from "../components/WeeklySummary";
  * L'accès à cette page est contrôlé par ProtectedLayout.
  */
 export default function Dashboard() {
- 
+  return (
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.profileSection}>
+          <ProfileSummary />
+        </div>
 
-if (auth === null) {
-  throw new Error("AuthProvider manquant");
-}
+        <h1 className={styles.sectionTitle}>Vos dernières performances</h1>
 
-const { logout } = auth;
+        <div className={styles.chartsGrid}>
+          <ActivityChart />
+          <HeartRateChart />
+        </div>
 
-/** Supprime la session simulée et redirige vers la connexion. */
-function handleLogout() {
-  logout();
-  navigate("/login", { replace: true });
-}
-
-return (
-  <main className={styles.page}>
-    <div className={styles.container}>
-      <div className={styles.profileSection}>
-        <ProfileSummary />
+        <div className={styles.weeklySummary}>
+          <WeeklySummary />
+        </div>
       </div>
-
-      <h1 className={styles.sectionTitle}>
-        Vos dernières performances
-      </h1>
-
-      <div className={styles.chartsGrid}>
-        <ActivityChart />
-        <HeartRateChart />
-      </div>
-
-      <div className={styles.weeklySummary}>
-        <WeeklySummary />
-      </div>
-
-
-    </div>
-  </main>
-);
-
+    </main>
+  );
 }
