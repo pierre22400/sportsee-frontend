@@ -1,0 +1,203 @@
+
+/*
+ * SPORTSEE — LAYOUT PARTAGÉ
+ *
+ * Présentation commune du logo, de la navigation
+ * et du pied de page.
+ *
+ * Les styles sont isolés par CSS Modules.
+ */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #f1f2ff;
+}
+
+.header {
+  width: 100%;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #1738ff;
+  font-size: 25px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 20px;
+}
+
+.mark span {
+  display: block;
+  width: 3px;
+  background-color: #f23617;
+  border-radius: 3px;
+}
+
+.mark span:nth-child(1),
+.mark span:nth-child(5) {
+  height: 7px;
+}
+
+.mark span:nth-child(2),
+.mark span:nth-child(4) {
+  height: 13px;
+}
+
+.mark span:nth-child(3) {
+  height: 19px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  background-color: #ffffff;
+  border-radius: 40px;
+}
+
+.navLink {
+  color: #252525;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.navLink:hover,
+.navLink.active {
+  color: #1738ff;
+}
+
+.navLink:focus-visible,
+.logout:focus-visible,
+.brand:focus-visible {
+  outline: 3px solid #1738ff;
+  outline-offset: 3px;
+}
+
+.separator {
+  width: 1px;
+  height: 20px;
+  background-color: #b6bfff;
+}
+
+.logout {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1738ff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  background-color: #f1f2ff;
+}
+
+/*
+ * Les pages existantes utilisent min-height: 100vh.
+ * Cette règle évite d'ajouter artificiellement
+ * une hauteur de fenêtre avant le footer.
+ */
+.content > main {
+  flex: 1;
+  min-height: 0;
+}
+
+.footer {
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #eeeeee;
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-sizing: border-box;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+.copyright {
+  margin: 0;
+  color: #333333;
+  font-size: 12px;
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  color: #333333;
+  font-size: 12px;
+}
+
+.footerMark {
+  display: inline-flex;
+  transform: scale(0.7);
+  transform-origin: right center;
+}
+
+@media (max-width: 600px) {
+  .headerInner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 16px;
+  }
+
+  .navigation {
+    box-sizing: border-box;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .navLink,
+  .logout {
+    font-size: 12px;
+  }
+
+  .footerInner {
+    padding: 16px;
+  }
+
+  .footerRight {
+    gap: 16px;
+  }
+}

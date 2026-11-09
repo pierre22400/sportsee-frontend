@@ -34,20 +34,7 @@
   color: #171717;
 }
 
-.logoutButton {
-  margin-top: 32px;
-  padding: 8px 14px;
-  border: 1px solid #d6d9ee;
-  border-radius: 8px;
-  background-color: #ffffff;
-  color: #1738ff;
-  cursor: pointer;
-}
 
-.logoutButton:focus-visible {
-  outline: 3px solid #1738ff;
-  outline-offset: 2px;
-}
 
 @media (max-width: 600px) {
   .container {

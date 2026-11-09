@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+
 import ActivityChart from "../components/ActivityChart";
 import HeartRateChart from "../components/HeartRateChart";
 import ProfileSummary from "../components/ProfileSummary";
@@ -20,8 +18,7 @@ import WeeklySummary from "../components/WeeklySummary";
  * L'accès à cette page est contrôlé par ProtectedLayout.
  */
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const auth = useContext(AuthContext);
+ 
 
 if (auth === null) {
   throw new Error("AuthProvider manquant");
@@ -55,13 +52,7 @@ return (
         <WeeklySummary />
       </div>
 
-      <button
-        type="button"
-        className={styles.logoutButton}
-        onClick={handleLogout}
-      >
-        Se déconnecter
-      </button>
+
     </div>
   </main>
 );
