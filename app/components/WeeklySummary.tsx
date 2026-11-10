@@ -116,15 +116,12 @@ function buildWeeklyStats(activities: readonly Activity[]): WeeklyStats {
 /**
  * Convertit une durée en minutes en texte lisible.
  */
+/**
+ * Formate la durée totale en minutes,
+ * sans conversion en heures.
+ */
 function formatDuration(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  if (hours === 0) {
-    return `${remainingMinutes} min`;
-  }
-
-  return `${hours} h ${remainingMinutes} min`;
+  return new Intl.NumberFormat("fr-FR").format(minutes);
 }
 
 /**
@@ -181,44 +178,48 @@ export default function WeeklySummary() {
             Courses hebdomadaires réalisées
           </p>
 
-          <div
-            className={styles.donut}
-            role="img"
-            aria-label={
-              `${stats.sessions} courses réalisées, ` +
-              `objectif illustratif de ${WEEKLY_GOAL}`
-            }
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  innerRadius={62}
-                  outerRadius={82}
-                  startAngle={90}
-                  endAngle={-270}
-                  stroke="none"
-                  isAnimationActive={false}
-                >
-                  <Cell fill="#1738FF" />
-                  <Cell fill="#DCE1FF" />
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
 
-          <div className={styles.legend} aria-hidden="true">
-            <span>
-              <span className={styles.doneDot} />
-              {stats.sessions} réalisées
-            </span>
+<div className={styles.donutStage}>
+  <div
+    className={styles.donut}
+    role="img"
+    aria-label={
+      `${stats.sessions} courses réalisées, ` +
+      `objectif illustratif de ${WEEKLY_GOAL}`
+    }
+  >
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          innerRadius={62}
+          outerRadius={82}
+          startAngle={90}
+          endAngle={-270}
+          stroke="none"
+          isAnimationActive={false}
+        >
+          <Cell fill="#1738FF" />
+          <Cell fill="#DCE1FF" />
+        </Pie>
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
 
-            <span>
-              <span className={styles.remainingDot} />
-              {remaining} restantes
-            </span>
-          </div>
+  <div className={styles.legend} aria-hidden="true">
+    <span className={styles.legendDone}>
+      <span className={styles.doneDot} />
+      {stats.sessions} réalisées
+    </span>
+
+    <span className={styles.legendRemaining}>
+      <span className={styles.remainingDot} />
+      {remaining} restantes
+    </span>
+  </div>
+</div>
+
 
           <p className={styles.note}>
             Objectif de {WEEKLY_GOAL} courses : valeur provisoire de la
@@ -230,18 +231,23 @@ export default function WeeklySummary() {
         <div className={styles.stats}>
           <article className={styles.statCard}>
             <p className={styles.label}>Durée d'activité</p>
-
-            <p className={styles.durationValue}>
-              {formatDuration(stats.duration)}
-            </p>
+<p className={styles.durationValue}>
+  {formatDuration(stats.duration)}{" "}
+  <span className={styles.durationUnit}>
+    {stats.duration === 1 ? "minute" : "minutes"}
+  </span>
+</p>
           </article>
 
           <article className={styles.statCard}>
             <p className={styles.label}>Distance</p>
 
-            <p className={styles.distanceValue}>
-              {distanceFormatter.format(stats.distance)} km
-            </p>
+<p className={styles.distanceValue}>
+  {distanceFormatter.format(stats.distance)}{" "}
+  <span className={styles.distanceUnit}>
+    kilomètres
+  </span>
+</p>
           </article>
         </div>
       </div>

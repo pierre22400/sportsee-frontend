@@ -28,9 +28,9 @@
 
 .donut {
   position: relative;
-  flex: 0 0 220px;
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
+  margin: 0;
 }
 
 .donutCenter {
@@ -78,6 +78,16 @@
   margin: 0;
   color: #737373;
   font-size: 12px;
+}
+
+.donutStage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 360px;
+  height: 220px;
+  margin: 18px auto 12px;
 }
 
 @media (max-width: 600px) {
@@ -138,27 +148,33 @@
   font-size: 13px;
 }
 
-.donut {
-  flex-basis: auto;
-  width: 200px;
-  height: 200px;
-  margin: 18px auto 12px;
-}
+
 
 .legend {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 16px;
+  position: absolute;
+  inset: 0;
+  margin: 0;
   color: #737373;
   font-size: 12px;
+  pointer-events: none;
 }
 
 .legend > span {
+  position: absolute;
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
+}
+
+.legendDone {
+  left: 0;
+  bottom: 40px;
+}
+
+.legendRemaining {
+  right: 0;
+  top: 35px;
 }
 
 .doneDot,
@@ -212,4 +228,44 @@
   .stats {
     grid-template-rows: auto;
   }
+}
+
+.goalCard {
+  container-type: inline-size;
+}
+
+@container (max-width: 340px) {
+  .donutStage {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 12px;
+  }
+
+  .legend {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .legend > span {
+    position: static;
+  }
+}
+
+.durationUnit,
+.distanceUnit {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.durationUnit {
+  color: #a3adff;
+}
+
+.distanceUnit {
+  color: #ffb7aa;
 }

@@ -34,7 +34,7 @@ export default function ProfileSummary() {
   const { profile, statistics } = userInfo;
 
   const fullName = `${profile.firstName} ${profile.lastName}`;
-  const initials = profile.firstName.charAt(0) + profile.lastName.charAt(0);
+ 
   const memberSince = dateFormatter.format(
     new Date(`${profile.createdAt}T00:00:00Z`),
   );
