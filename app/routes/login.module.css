@@ -1,0 +1,94 @@
+
+/*
+ * SPORTSEE — PAGE DE CONNEXION
+ *
+ * Présentation centrée du formulaire.
+ * Adaptation aux écrans mobiles.
+ * États visuels des champs et du bouton.
+ */
+
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #f5f6fa;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 6%);
+}
+
+.title {
+  margin: 0 0 12px;
+  color: #202020;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.label {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd0dc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #202020;
+  font-size: 15px;
+}
+
+.input:focus-visible {
+  outline: 2px solid #1738ff;
+  outline-offset: 2px;
+}
+
+.button {
+  margin-top: 12px;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 6px;
+  background-color: #1738ff;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #102ac9;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.error {
+  margin: 0;
+  color: #b42318;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .form {
+    padding: 28px 20px;
+  }
+}
