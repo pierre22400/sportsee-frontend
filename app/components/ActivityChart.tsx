@@ -10,14 +10,13 @@ import {
   YAxis,
 } from "recharts";
 
-import activityData from "../mocks/activity.json";
+import type { Activity } from "../services/sportseeApi";
 import styles from "./ActivityChart.module.css";
 
 /**
  * SPORTSEE — GRAPHIQUE DES ACTIVITÉS
- *
- * Affiche la distance parcourue lors des séances de course.
- * Les données proviennent du mock activity.json.
+ * Les séances sont transmises par le Dashboard via une prop.
+ * Le composant ne réalise aucun appel HTTP.
  *
  * Regroupe les distances par semaine civile (lundi-dimanche).
  * Affiche une fenêtre glissante de quatre semaines.
@@ -27,11 +26,10 @@ import styles from "./ActivityChart.module.css";
  * Les données originales ne sont jamais modifiées.
  * Le graphique s'adapte à la largeur de son conteneur.
  */
-
-type Activity = {
-  date: string;
-  distance: number;
+type ActivityChartProps = {
+  activities: readonly Activity[];
 };
+
 
 type WeeklyDistance = {
   monday: string;
@@ -161,8 +159,14 @@ function formatPeriod(weeks: readonly WeeklyDistance[]): string {
  * Affiche les distances hebdomadaires sous forme de barres.
  * Permet de naviguer dans une fenêtre de quatre semaines.
  */
-export default function ActivityChart() {
-  const weeklyData = buildWeeklyDistances(activityData);
+/**
+ * Affiche les distances hebdomadaires reçues du Dashboard.
+ * Conserve la navigation glissante sur quatre semaines.
+ */
+export default function ActivityChart({
+  activities,
+}: ActivityChartProps) {
+  const weeklyData = buildWeeklyDistances(activities);
   const [windowStart, setWindowStart] = useState(() =>
     Math.max(0, weeklyData.length - WINDOW_SIZE),
   );

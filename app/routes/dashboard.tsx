@@ -10,6 +10,8 @@ import { AuthContext } from "../context/AuthContext";
 
 import {
   getUserInfo,
+  getUserActivities,
+  type Activity,
   type UserInfo,
 } from "../services/sportseeApi";
 
@@ -46,7 +48,11 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [error, setError] = useState<string | null>(null);
-
+const [activities, setActivities] = useState<Activity[]>([]);
+const [activitiesLoading, setActivitiesLoading] = useState(true);
+const [activitiesError, setActivitiesError] = useState<string | null>(
+  null,
+);
   /**
    * Charge les informations du profil depuis l'API.
    * Annule la requête lorsqu'elle n'est plus utile.
@@ -95,6 +101,62 @@ export default function Dashboard() {
     return () => controller.abort();
   }, [token]);
 
+
+/**
+ * Charge les séances sportives depuis l'API.
+ *
+ * La période correspond à l'historique de démonstration
+ * vérifié sur le backend, du 2 juin au 13 juillet 2025.
+ *
+ * L'annulation empêche une ancienne requête de modifier
+ * l'interface après un changement de session.
+ */
+useEffect(() => {
+  if (!token) {
+    setActivities([]);
+    setActivitiesLoading(false);
+    return;
+  }
+
+  const controller = new AbortController();
+
+  /**
+   * Récupère les activités et actualise les états React.
+   */
+  async function loadActivities(): Promise<void> {
+    setActivitiesLoading(true);
+    setActivitiesError(null);
+    setActivities([]);
+
+    try {
+      const result = await getUserActivities(
+        token!,
+        "2025-06-02",
+        "2025-07-13",
+        controller.signal,
+      );
+
+      if (!controller.signal.aborted) {
+        setActivities(result);
+      }
+    } catch {
+      if (!controller.signal.aborted) {
+        setActivitiesError(
+          "Impossible de récupérer les activités sportives.",
+        );
+      }
+    } finally {
+      if (!controller.signal.aborted) {
+        setActivitiesLoading(false);
+      }
+    }
+  }
+
+  void loadActivities();
+
+  return () => controller.abort();
+}, [token]);
+
   return (
     <main className={styles.page}>
       <div className={styles.container}>
@@ -120,10 +182,21 @@ export default function Dashboard() {
           Vos dernières performances
         </h1>
 
-        <div className={styles.chartsGrid}>
-          <ActivityChart />
-          <HeartRateChart />
-        </div>
+<div className={styles.chartsGrid}>
+  {activitiesLoading ? (
+    <p role="status">
+      Chargement des activités…
+    </p>
+  ) : activitiesError ? (
+    <p role="alert">
+      {activitiesError}
+    </p>
+  ) : (
+    <ActivityChart activities={activities} />
+  )}
+
+  <HeartRateChart />
+</div>
 
         <div className={styles.weeklySummary}>
           <WeeklySummary />
