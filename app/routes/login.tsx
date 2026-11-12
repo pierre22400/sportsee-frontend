@@ -37,6 +37,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resetNotice, setResetNotice] = useState(false);
 
   if (auth === null) {
     throw new Error("AuthProvider manquant");
@@ -79,73 +80,118 @@ export default function Login() {
     }
   }
 
-  
-return (
-  <main className={styles.page}>
-    <form
-      className={styles.form}
-      onSubmit={handleLogin}
-    >
-      <h1 className={styles.title}>
-        Connexion SportSee
-      </h1>
-
-      <label
-        className={styles.label}
-        htmlFor="username"
+  return (
+    <main className={styles.page}>
+      <section
+        className={styles.leftPanel}
+        aria-labelledby="login-title"
       >
-        Identifiant
-      </label>
+        <div className={styles.leftContent}>
+          <div className={styles.brand} aria-label="SportSee">
+            <span className={styles.brandMark} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </span>
+            <span>SPORTSEE</span>
+          </div>
 
-      <input
-        className={styles.input}
-        id="username"
-        type="text"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-        autoComplete="username"
-        disabled={isLoading}
-        required
-      />
+          <form
+            className={styles.form}
+            onSubmit={handleLogin}
+          >
+            <h1 className={styles.title} id="login-title">
+              Transformez
+              <span>vos stats en résultats</span>
+            </h1>
 
-      <label
-        className={styles.label}
-        htmlFor="password"
-      >
-        Mot de passe
-      </label>
+            <h2 className={styles.formTitle}>
+              Se connecter
+            </h2>
 
-      <input
-        className={styles.input}
-        id="password"
-        type="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        autoComplete="current-password"
-        disabled={isLoading}
-        required
-      />
+            <div className={styles.field}>
+              <label
+                className={styles.label}
+                htmlFor="username"
+              >
+                Adresse email ou identifiant
+              </label>
 
-      {error && (
-        <p
-          className={styles.error}
-          role="alert"
-        >
-          {error}
+              <input
+                className={styles.input}
+                id="username"
+                name="username"
+                type="text"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                autoComplete="username"
+                disabled={isLoading}
+                required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label
+                className={styles.label}
+                htmlFor="password"
+              >
+                Mot de passe
+              </label>
+
+              <input
+                className={styles.input}
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                disabled={isLoading}
+                required
+              />
+            </div>
+
+            {error && (
+              <p className={styles.error} role="alert">
+                {error}
+              </p>
+            )}
+
+            <button
+              className={styles.button}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Connexion en cours…" : "Se connecter"}
+            </button>
+
+            <button
+              className={styles.forgotPassword}
+              type="button"
+              onClick={() => setResetNotice((visible) => !visible)}
+              aria-expanded={resetNotice}
+            >
+              Mot de passe oublié ?
+            </button>
+
+            {resetNotice && (
+              <p className={styles.resetNotice} role="status">
+                La récupération du mot de passe n'est pas disponible
+                pour les comptes de démonstration SportSee.
+              </p>
+            )}
+          </form>
+        </div>
+      </section>
+
+      <aside className={styles.visualPanel} aria-label="Univers de la course à pied">
+        <p className={styles.visualCaption}>
+          Analysez vos performances en un clin d’œil,
+          suivez vos progrès et atteignez vos objectifs.
         </p>
-      )}
-
-      <button
-        className={styles.button}
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading
-          ? "Connexion en cours…"
-          : "Se connecter"}
-      </button>
-    </form>
-  </main>
-);
-
+      </aside>
+    </main>
+  );
 }

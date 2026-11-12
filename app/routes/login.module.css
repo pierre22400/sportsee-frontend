@@ -1,73 +1,159 @@
-
 /*
- * SPORTSEE — PAGE DE CONNEXION
+ * SPORTSEE — PAGE DE CONNEXION, ADAPTATION FIGMA
  *
- * Présentation centrée du formulaire.
- * Adaptation aux écrans mobiles.
- * États visuels des champs et du bouton.
+ * Deux panneaux à l'écran large : formulaire lavande
+ * et visuel de course. La disposition se simplifie sur
+ * tablette et téléphone, sans modifier la logique React.
+ *
+ * La photographie libre Unsplash est provisoire :
+ * le fichier Figma n'expose pas ses assets à ce compte.
+ * Remplacer l'URL lorsque l'image source sera accessible.
  */
 
 .page {
+  display: grid;
+  grid-template-columns: minmax(0, 44%) minmax(0, 56%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: "Inter", Arial, sans-serif;
+  background-color: #f1f2ff;
+}
+
+.leftPanel {
+  box-sizing: border-box;
   display: flex;
+  justify-content: center;
+  min-width: 0;
+  padding: 40px clamp(24px, 4.5vw, 80px) 48px;
+  background-color: #f1f2ff;
+}
+
+.leftContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(64px, 11vh, 118px);
+  width: 100%;
+  max-width: 430px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #1738ff;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.brandMark {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 24px;
-  background-color: #f5f6fa;
+  gap: 2px;
+  height: 20px;
+}
+
+.brandMark span {
+  display: block;
+  width: 3px;
+  border-radius: 3px;
+  background-color: #f23617;
+}
+
+.brandMark span:nth-child(1),
+.brandMark span:nth-child(5) {
+  height: 7px;
+}
+
+.brandMark span:nth-child(2),
+.brandMark span:nth-child(4) {
+  height: 13px;
+}
+
+.brandMark span:nth-child(3) {
+  height: 19px;
 }
 
 .form {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-sizing: border-box;
+  gap: 17px;
   width: 100%;
-  max-width: 420px;
-  padding: 40px;
+  max-width: 398px;
+  padding: 34px 38px 46px;
   background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 8px 28px rgb(0 0 0 / 6%);
+  border-radius: 16px;
 }
 
 .title {
-  margin: 0 0 12px;
-  color: #202020;
-  font-size: 26px;
-  font-weight: 600;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 15px;
+  color: #1738ff;
+  font-size: clamp(21px, 1.75vw, 25px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+}
+
+.formTitle {
+  margin: 0 0 2px;
+  color: #151515;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .label {
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
+  color: #777;
+  font-size: 11px;
+  font-weight: 400;
 }
 
 .input {
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #cbd0dc;
-  border-radius: 6px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 7px;
   background-color: #fff;
-  color: #202020;
-  font-size: 15px;
+  color: #171717;
+  font: inherit;
+  font-size: 14px;
 }
 
-.input:focus-visible {
-  outline: 2px solid #1738ff;
-  outline-offset: 2px;
+.input:focus-visible,
+.button:focus-visible,
+.forgotPassword:focus-visible {
+  outline: 3px solid #1738ff;
+  outline-offset: 3px;
+}
+
+.input:disabled {
+  background-color: #f5f5f5;
 }
 
 .button {
+  min-height: 39px;
   margin-top: 12px;
-  padding: 13px 20px;
+  padding: 10px 16px;
   border: 0;
   border-radius: 6px;
   background-color: #1738ff;
   color: #fff;
-  font-size: 15px;
+  font: inherit;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -77,18 +163,136 @@
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: wait;
 }
 
-.error {
-  margin: 0;
-  color: #b42318;
-  font-size: 13px;
+.forgotPassword {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #202020;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.error,
+.resetNotice {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.error {
+  color: #b42318;
+}
+
+.resetNotice {
+  color: #444;
+}
+
+.visualPanel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: 28px;
+  background-color: #d5dcf3;
+  background-image:
+    linear-gradient(180deg, transparent 75%, rgb(0 0 0 / 10%)),
+    url("https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=85");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.visualCaption {
+  box-sizing: border-box;
+  max-width: 275px;
+  margin: 0;
+  padding: 13px 17px;
+  border-radius: 28px;
+  background-color: #fff;
+  color: #1738ff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+}
+
+@media (max-width: 1000px) {
+  .page {
+    grid-template-columns: minmax(0, 52%) minmax(0, 48%);
+  }
+
+  .leftPanel {
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  .leftContent {
+    gap: 72px;
+  }
+
   .form {
-    padding: 28px 20px;
+    padding: 32px 28px 40px;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    display: block;
+  }
+
+  .leftPanel {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 32px 20px 48px;
+  }
+
+  .leftContent {
+    max-width: 430px;
+    gap: 72px;
+  }
+
+  .form {
+    max-width: none;
+    padding: 34px 28px 42px;
+  }
+
+  .title {
+    font-size: 23px;
+  }
+
+  .visualPanel {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .leftPanel {
+    padding: 24px 14px 36px;
+  }
+
+  .form {
+    padding: 28px 20px 34px;
+  }
+
+  .brand {
+    font-size: 23px;
+  }
+
+  .title {
+    font-size: 21px;
   }
 }
