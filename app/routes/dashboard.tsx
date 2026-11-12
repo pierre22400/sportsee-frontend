@@ -182,21 +182,28 @@ useEffect(() => {
           Vos dernières performances
         </h1>
 
-<div className={styles.chartsGrid}>
-  {activitiesLoading ? (
-    <p role="status">
-      Chargement des activités…
-    </p>
-  ) : activitiesError ? (
-    <p role="alert">
-      {activitiesError}
-    </p>
-  ) : (
-    <ActivityChart activities={activities} />
-  )}
 
-  <HeartRateChart />
-</div>
+{activitiesLoading ? (
+  <p role="status">
+    Chargement des activités sportives…
+  </p>
+) : activitiesError ? (
+  <p role="alert">
+    {activitiesError}
+  </p>
+) : (
+  <>
+    <div className={styles.chartsGrid}>
+      <ActivityChart activities={activities} />
+      <HeartRateChart activities={activities} />
+    </div>
+
+    <div className={styles.weeklySummary}>
+      <WeeklySummary activities={activities} />
+    </div>
+  </>
+)}
+
 
         <div className={styles.weeklySummary}>
           <WeeklySummary />

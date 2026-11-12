@@ -12,7 +12,7 @@ import {
   YAxis,
 } from "recharts";
 
-import activityData from "../mocks/activity.json";
+import type { Activity } from "../services/sportseeApi";
 import styles from "./HeartRateChart.module.css";
 
 /**
@@ -34,16 +34,13 @@ import styles from "./HeartRateChart.module.css";
  * - affichage du lundi au dimanche ;
  * - absence de mesure représentée par null ;
  * - navigation par semaines complètes.
+ * 
+ *  Les séances sont reçues du Dashboard par une prop.
+ * Le composant ne réalise aucun appel HTTP.
  */
 
-type Activity = {
-  date: string;
-  duration: number;
-  heartRate: {
-    min: number;
-    max: number;
-    average: number;
-  };
+type HeartRateChartProps = {
+  activities: readonly Activity[];
 };
 
 type HeartRatePoint = {
@@ -215,13 +212,13 @@ function formatPeriod(monday: string | undefined): string {
 }
 
 /**
- * Affiche une carte responsive contenant
- * les mesures cardiaques des séances.
- *
- * Les flèches changent de semaine complète.
+ * Affiche les mesures cardiaques transmises par le Dashboard.
+ * Conserve la navigation par semaines complètes.
  */
-export default function HeartRateChart() {
-  const weekStarts = buildWeekStarts(activityData);
+export default function HeartRateChart({
+  activities,
+}: HeartRateChartProps) {
+  const weekStarts = buildWeekStarts(activities);
 
   const [weekIndex, setWeekIndex] = useState(() =>
     Math.max(0, weekStarts.length - 1),
@@ -232,9 +229,9 @@ export default function HeartRateChart() {
 
   const selectedMonday = weekStarts[safeIndex];
 
-  const data = selectedMonday
-    ? buildHeartRateData(activityData, selectedMonday)
-    : [];
+const data = selectedMonday
+  ? buildHeartRateData(activities, selectedMonday)
+  : [];
 
   const averageBpm = getAverageHeartRate(data);
   const periodLabel = formatPeriod(selectedMonday);

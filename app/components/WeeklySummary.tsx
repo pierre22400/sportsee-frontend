@@ -1,6 +1,6 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
-import activityData from "../mocks/activity.json";
+import type { Activity } from "../services/sportseeApi";
 import styles from "./WeeklySummary.module.css";
 
 /**
@@ -9,9 +9,7 @@ import styles from "./WeeklySummary.module.css";
  * Affiche le nombre de courses, la distance totale
  * et la durée cumulée sur une semaine.
  *
- * La semaine de référence est la dernière semaine
- * enregistrée dans le mock, et non la semaine civile
- * actuelle.
+
  *
  * L'objectif de six courses est provisoire :
  * il sert uniquement à reproduire la maquette.
@@ -20,12 +18,9 @@ import styles from "./WeeklySummary.module.css";
  * Le graphique reste responsive et accessible.
  */
 
-type Activity = {
-  date: string;
-  distance: number;
-  duration: number;
+type WeeklySummaryProps = {
+  activities: readonly Activity[];
 };
-
 type WeeklyStats = {
   monday: string | null;
   sessions: number;
@@ -142,11 +137,13 @@ function formatPeriod(monday: string | null): string {
 }
 
 /**
- * Affiche un anneau de progression et les
- * statistiques de la dernière semaine enregistrée.
+ * Affiche le bilan de la dernière semaine enregistrée
+ * à partir des séances transmises par le Dashboard.
  */
-export default function WeeklySummary() {
-  const stats = buildWeeklyStats(activityData);
+export default function WeeklySummary({
+  activities,
+}: WeeklySummaryProps) {
+  const stats = buildWeeklyStats(activities);
 
   const completed = Math.min(stats.sessions, WEEKLY_GOAL);
   const remaining = Math.max(0, WEEKLY_GOAL - completed);
