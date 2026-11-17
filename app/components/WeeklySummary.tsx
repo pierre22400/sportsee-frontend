@@ -140,9 +140,7 @@ function formatPeriod(monday: string | null): string {
  * Affiche le bilan de la dernière semaine enregistrée
  * à partir des séances transmises par le Dashboard.
  */
-export default function WeeklySummary({
-  activities,
-}: WeeklySummaryProps) {
+export default function WeeklySummary({ activities }: WeeklySummaryProps) {
   const stats = buildWeeklyStats(activities);
 
   const completed = Math.min(stats.sessions, WEEKLY_GOAL);
@@ -175,48 +173,46 @@ export default function WeeklySummary({
             Courses hebdomadaires réalisées
           </p>
 
+          <div className={styles.donutStage}>
+            <div
+              className={styles.donut}
+              role="img"
+              aria-label={
+                `${stats.sessions} courses réalisées, ` +
+                `objectif illustratif de ${WEEKLY_GOAL}`
+              }
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    innerRadius={62}
+                    outerRadius={82}
+                    startAngle={90}
+                    endAngle={-270}
+                    stroke="none"
+                    isAnimationActive={false}
+                  >
+                    <Cell fill="#1738FF" />
+                    <Cell fill="#DCE1FF" />
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
 
-<div className={styles.donutStage}>
-  <div
-    className={styles.donut}
-    role="img"
-    aria-label={
-      `${stats.sessions} courses réalisées, ` +
-      `objectif illustratif de ${WEEKLY_GOAL}`
-    }
-  >
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={chartData}
-          dataKey="value"
-          innerRadius={62}
-          outerRadius={82}
-          startAngle={90}
-          endAngle={-270}
-          stroke="none"
-          isAnimationActive={false}
-        >
-          <Cell fill="#1738FF" />
-          <Cell fill="#DCE1FF" />
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  </div>
+            <div className={styles.legend} aria-hidden="true">
+              <span className={styles.legendDone}>
+                <span className={styles.doneDot} />
+                {stats.sessions} réalisées
+              </span>
 
-  <div className={styles.legend} aria-hidden="true">
-    <span className={styles.legendDone}>
-      <span className={styles.doneDot} />
-      {stats.sessions} réalisées
-    </span>
-
-    <span className={styles.legendRemaining}>
-      <span className={styles.remainingDot} />
-      {remaining} restantes
-    </span>
-  </div>
-</div>
-
+              <span className={styles.legendRemaining}>
+                <span className={styles.remainingDot} />
+                {remaining} restantes
+              </span>
+            </div>
+          </div>
 
           <p className={styles.note}>
             Objectif de {WEEKLY_GOAL} courses : valeur provisoire de la
@@ -228,23 +224,21 @@ export default function WeeklySummary({
         <div className={styles.stats}>
           <article className={styles.statCard}>
             <p className={styles.label}>Durée d'activité</p>
-<p className={styles.durationValue}>
-  {formatDuration(stats.duration)}{" "}
-  <span className={styles.durationUnit}>
-    {stats.duration === 1 ? "minute" : "minutes"}
-  </span>
-</p>
+            <p className={styles.durationValue}>
+              {formatDuration(stats.duration)}{" "}
+              <span className={styles.durationUnit}>
+                {stats.duration === 1 ? "minute" : "minutes"}
+              </span>
+            </p>
           </article>
 
           <article className={styles.statCard}>
             <p className={styles.label}>Distance</p>
 
-<p className={styles.distanceValue}>
-  {distanceFormatter.format(stats.distance)}{" "}
-  <span className={styles.distanceUnit}>
-    kilomètres
-  </span>
-</p>
+            <p className={styles.distanceValue}>
+              {distanceFormatter.format(stats.distance)}{" "}
+              <span className={styles.distanceUnit}>kilomètres</span>
+            </p>
           </article>
         </div>
       </div>

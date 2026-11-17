@@ -1,12 +1,8 @@
-
 import { useContext, useEffect, useState } from "react";
 
 import UserAvatar from "../components/UserAvatar";
 import { AuthContext } from "../context/AuthContext";
-import {
-  getUserInfo,
-  type UserInfo,
-} from "../services/sportseeApi";
+import { getUserInfo, type UserInfo } from "../services/sportseeApi";
 import styles from "./profile.module.css";
 
 /**
@@ -50,9 +46,7 @@ export default function Profile() {
 
   const token = auth?.token ?? null;
 
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(
-    null,
-  );
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -75,10 +69,7 @@ export default function Profile() {
       setUserInfo(null);
 
       try {
-        const result = await getUserInfo(
-          token!,
-          controller.signal,
-        );
+        const result = await getUserInfo(token!, controller.signal);
 
         if (!controller.signal.aborted) {
           setUserInfo(result);
@@ -107,9 +98,7 @@ export default function Profile() {
     return (
       <main className={styles.page}>
         <div className={styles.container}>
-          <p role="status">
-            Chargement du profil…
-          </p>
+          <p role="status">Chargement du profil…</p>
         </div>
       </main>
     );
@@ -119,9 +108,7 @@ export default function Profile() {
     return (
       <main className={styles.page}>
         <div className={styles.container}>
-          <p role="alert">
-            {error ?? "Aucune donnée de profil disponible."}
-          </p>
+          <p role="alert">{error ?? "Aucune donnée de profil disponible."}</p>
         </div>
       </main>
     );
@@ -161,9 +148,7 @@ export default function Profile() {
               />
 
               <div>
-                <h1 className={styles.name}>
-                  {fullName}
-                </h1>
+                <h1 className={styles.name}>{fullName}</h1>
 
                 <p className={styles.memberSince}>
                   Membre depuis le {memberSince}
