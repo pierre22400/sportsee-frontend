@@ -81,7 +81,9 @@ function buildWeeklyStats(activities: readonly Activity[]): WeeklyStats {
       duration: 0,
     };
   }
-
+  /**
+   * Trouver la date de la dernière séance enregistrée
+   */
   const latestDate = activities.reduce(
     (latest, activity) => (activity.date > latest ? activity.date : latest),
     "",
@@ -133,6 +135,40 @@ function formatPeriod(monday: string | null): string {
     dateFormatter.format(new Date(`${monday}T00:00:00Z`)) +
     " – " +
     dateFormatter.format(new Date(`${sunday}T00:00:00Z`))
+  );
+}
+
+type WeeklyStatCardProps = {
+  label: string;
+  value: string;
+  unit: string;
+  kind: "duration" | "distance";
+};
+
+/**
+ * SPORTSEE — CARTE STATISTIQUE HEBDOMADAIRE
+ *
+ * Affiche un libellé, une valeur et son unité.
+ * La variante kind détermine les classes CSS
+ * utilisées pour conserver les couleurs existantes.
+ *
+ * Ce composant ne modifie aucune donnée sportive.
+ */
+function WeeklyStatCard({ label, value, unit, kind }: WeeklyStatCardProps) {
+  const valueClass =
+    kind === "duration" ? styles.durationValue : styles.distanceValue;
+
+  const unitClass =
+    kind === "duration" ? styles.durationUnit : styles.distanceUnit;
+
+  return (
+    <article className={styles.statCard}>
+      <p className={styles.label}>{label}</p>
+
+      <p className={valueClass}>
+        {value} <span className={unitClass}>{unit}</span>
+      </p>
+    </article>
   );
 }
 
@@ -220,26 +256,20 @@ export default function WeeklySummary({ activities }: WeeklySummaryProps) {
           </p>
         </div>
 
-        {/* Cartes 2 et 3 : statistiques */}
         <div className={styles.stats}>
-          <article className={styles.statCard}>
-            <p className={styles.label}>Durée d'activité</p>
-            <p className={styles.durationValue}>
-              {formatDuration(stats.duration)}{" "}
-              <span className={styles.durationUnit}>
-                {stats.duration === 1 ? "minute" : "minutes"}
-              </span>
-            </p>
-          </article>
+          <WeeklyStatCard
+            label="Durée d'activité"
+            value={formatDuration(stats.duration)}
+            unit={stats.duration === 1 ? "minute" : "minutes"}
+            kind="duration"
+          />
 
-          <article className={styles.statCard}>
-            <p className={styles.label}>Distance</p>
-
-            <p className={styles.distanceValue}>
-              {distanceFormatter.format(stats.distance)}{" "}
-              <span className={styles.distanceUnit}>kilomètres</span>
-            </p>
-          </article>
+          <WeeklyStatCard
+            label="Distance"
+            value={distanceFormatter.format(stats.distance)}
+            unit="kilomètres"
+            kind="distance"
+          />
         </div>
       </div>
     </section>
