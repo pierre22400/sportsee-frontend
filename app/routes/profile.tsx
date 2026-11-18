@@ -41,7 +41,7 @@ type ProfileStatCardProps = {
 };
 
 /**
- * SPORTSEE — CARTE STATISTIQUE DU PROFIL
+ * NOUVEAU - SPORTSEE — CARTE STATISTIQUE DU PROFIL
  *
  * Affiche une statistique utilisateur dans une carte.
  *
@@ -51,6 +51,7 @@ type ProfileStatCardProps = {
  * Ce composant ne réalise aucun appel API
  * et ne modifie aucune donnée utilisateur.
  */
+
 function ProfileStatCard({ title, value }: ProfileStatCardProps) {
   return (
     <article className={styles.statCard}>
