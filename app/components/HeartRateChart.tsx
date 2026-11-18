@@ -34,7 +34,7 @@ import styles from "./HeartRateChart.module.css";
  * - affichage du lundi au dimanche ;
  * - absence de mesure représentée par null ;
  * - navigation par semaines complètes.
- * 
+ *
  *  Les séances sont reçues du Dashboard par une prop.
  * Le composant ne réalise aucun appel HTTP.
  */
@@ -215,9 +215,7 @@ function formatPeriod(monday: string | undefined): string {
  * Affiche les mesures cardiaques transmises par le Dashboard.
  * Conserve la navigation par semaines complètes.
  */
-export default function HeartRateChart({
-  activities,
-}: HeartRateChartProps) {
+export default function HeartRateChart({ activities }: HeartRateChartProps) {
   const weekStarts = buildWeekStarts(activities);
 
   const [weekIndex, setWeekIndex] = useState(() =>
@@ -229,9 +227,9 @@ export default function HeartRateChart({
 
   const selectedMonday = weekStarts[safeIndex];
 
-const data = selectedMonday
-  ? buildHeartRateData(activities, selectedMonday)
-  : [];
+  const data = selectedMonday
+    ? buildHeartRateData(activities, selectedMonday)
+    : [];
 
   const averageBpm = getAverageHeartRate(data);
   const periodLabel = formatPeriod(selectedMonday);

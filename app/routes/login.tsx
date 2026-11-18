@@ -1,4 +1,3 @@
-
 import { useContext, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router";
@@ -52,19 +51,14 @@ export default function Login() {
    * Affiche un message en cas d'échec.
    * Réinitialise toujours l'état de chargement.
    */
-  async function handleLogin(
-    event: FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  async function handleLogin(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await loginSportSee(
-        username,
-        password,
-      );
+      const response = await loginSportSee(username, password);
 
       login(response.token);
 
@@ -72,9 +66,7 @@ export default function Login() {
         replace: true,
       });
     } catch {
-      setError(
-        "Connexion impossible. Vérifie tes identifiants et le serveur.",
-      );
+      setError("Connexion impossible. Vérifie tes identifiants et le serveur.");
     } finally {
       setIsLoading(false);
     }
@@ -82,10 +74,7 @@ export default function Login() {
 
   return (
     <main className={styles.page}>
-      <section
-        className={styles.leftPanel}
-        aria-labelledby="login-title"
-      >
+      <section className={styles.leftPanel} aria-labelledby="login-title">
         <div className={styles.leftContent}>
           <div className={styles.brand} aria-label="SportSee">
             <span className={styles.brandMark} aria-hidden="true">
@@ -98,24 +87,16 @@ export default function Login() {
             <span>SPORTSEE</span>
           </div>
 
-          <form
-            className={styles.form}
-            onSubmit={handleLogin}
-          >
+          <form className={styles.form} onSubmit={handleLogin}>
             <h1 className={styles.title} id="login-title">
               Transformez
               <span>vos stats en résultats</span>
             </h1>
 
-            <h2 className={styles.formTitle}>
-              Se connecter
-            </h2>
+            <h2 className={styles.formTitle}>Se connecter</h2>
 
             <div className={styles.field}>
-              <label
-                className={styles.label}
-                htmlFor="username"
-              >
+              <label className={styles.label} htmlFor="username">
                 Adresse email ou identifiant
               </label>
 
@@ -133,10 +114,7 @@ export default function Login() {
             </div>
 
             <div className={styles.field}>
-              <label
-                className={styles.label}
-                htmlFor="password"
-              >
+              <label className={styles.label} htmlFor="password">
                 Mot de passe
               </label>
 
@@ -178,18 +156,21 @@ export default function Login() {
 
             {resetNotice && (
               <p className={styles.resetNotice} role="status">
-                La récupération du mot de passe n'est pas disponible
-                pour les comptes de démonstration SportSee.
+                La récupération du mot de passe n'est pas disponible pour les
+                comptes de démonstration SportSee.
               </p>
             )}
           </form>
         </div>
       </section>
 
-      <aside className={styles.visualPanel} aria-label="Univers de la course à pied">
+      <aside
+        className={styles.visualPanel}
+        aria-label="Univers de la course à pied"
+      >
         <p className={styles.visualCaption}>
-          Analysez vos performances en un clin d’œil,
-          suivez vos progrès et atteignez vos objectifs.
+          Analysez vos performances en un clin d’œil, suivez vos progrès et
+          atteignez vos objectifs.
         </p>
       </aside>
     </main>

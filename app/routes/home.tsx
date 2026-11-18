@@ -1,4 +1,3 @@
-
 import { Navigate } from "react-router";
 import type { Route } from "./+types/home";
 

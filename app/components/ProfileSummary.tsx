@@ -1,4 +1,3 @@
-
 import type { UserInfo } from "../services/sportseeApi";
 
 import styles from "./ProfileSummary.module.css";
@@ -39,9 +38,7 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
  * L'avatar conserve son repli vers les initiales
  * si la photographie n'est pas disponible.
  */
-export default function ProfileSummary({
-  userInfo,
-}: ProfileSummaryProps) {
+export default function ProfileSummary({ userInfo }: ProfileSummaryProps) {
   const { profile, statistics } = userInfo;
 
   const fullName = `${profile.firstName} ${profile.lastName}`;
@@ -57,10 +54,7 @@ export default function ProfileSummary({
     : "—";
 
   return (
-    <section
-      className={styles.card}
-      aria-label="Résumé du profil sportif"
-    >
+    <section className={styles.card} aria-label="Résumé du profil sportif">
       <UserAvatar
         firstName={profile.firstName}
         lastName={profile.lastName}
@@ -69,23 +63,15 @@ export default function ProfileSummary({
       />
 
       <div className={styles.identity}>
-        <h2 className={styles.name}>
-          {fullName}
-        </h2>
+        <h2 className={styles.name}>{fullName}</h2>
 
-        <p className={styles.memberSince}>
-          Membre depuis le {memberSince}
-        </p>
+        <p className={styles.memberSince}>Membre depuis le {memberSince}</p>
       </div>
 
       <div className={styles.distance}>
-        <span className={styles.distanceLabel}>
-          Distance totale parcourue
-        </span>
+        <span className={styles.distanceLabel}>Distance totale parcourue</span>
 
-        <strong className={styles.distanceValue}>
-          {distanceLabel} km
-        </strong>
+        <strong className={styles.distanceValue}>{distanceLabel} km</strong>
       </div>
     </section>
   );

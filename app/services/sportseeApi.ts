@@ -1,4 +1,8 @@
 
+import mockUserInfo from "../mocks/userInfo.json";
+import mockActivities from "../mocks/activity.json";
+
+
 /**
  * SPORTSEE — SERVICE DE COMMUNICATION AVEC L'API REST
  *
@@ -20,6 +24,17 @@
  */
 
 const API_BASE_URL = "http://localhost:8000";
+
+/**
+ * Choisit la provenance des données sportives.
+ *
+ * true  : données fictives des fichiers JSON.
+ * false : données réelles du backend SportSee.
+ *
+ * L'authentification reste assurée par l'API.
+ */
+const USE_MOCK = true;
+
 
 /**
  * Réponse du serveur après une authentification réussie.
@@ -75,19 +90,11 @@ export type Activity = {
  *
  * Une erreur réseau ou une annulation est propagée.
  */
-async function requestJson<T>(
-  path: string,
-  options?: RequestInit,
-): Promise<T> {
-  const response = await fetch(
-    `${API_BASE_URL}${path}`,
-    options,
-  );
+async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, options);
 
   if (!response.ok) {
-    throw new Error(
-      `Erreur SportSee API : HTTP ${response.status}`,
-    );
+    throw new Error(`Erreur SportSee API : HTTP ${response.status}`);
   }
 
   return (await response.json()) as T;
@@ -123,10 +130,21 @@ export function loginSportSee(
  * Le JWT est transmis dans l'en-tête Authorization.
  * Le signal optionnel permet d'annuler la requête.
  */
+
+/**
+ * Récupère le profil depuis les mocks ou l'API.
+ *
+ * En mode mock, retourne les données locales.
+ * En mode API, conserve l'appel HTTP authentifié.
+ */
 export function getUserInfo(
   token: string,
   signal?: AbortSignal,
 ): Promise<UserInfo> {
+  if (USE_MOCK) {
+    return Promise.resolve(mockUserInfo);
+  }
+
   return requestJson<UserInfo>("/api/user-info", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -135,16 +153,15 @@ export function getUserInfo(
   });
 }
 
+
 /**
- * Récupère les activités comprises entre deux dates.
+ * Récupère les activités sportives sur une période.
  *
- * startWeek et endWeek utilisent le format YYYY-MM-DD.
+ * En mode mock, filtre les séances locales
+ * entre les deux dates fournies.
  *
- * URLSearchParams construit et encode les paramètres
- * de la requête de manière sûre.
- *
- * Le signal optionnel permet d'annuler la requête
- * lorsque l'utilisateur change de période.
+ * En mode API, conserve la requête HTTP existante,
+ * l'authentification JWT et le signal d'annulation.
  */
 export function getUserActivities(
   token: string,
@@ -152,6 +169,16 @@ export function getUserActivities(
   endWeek: string,
   signal?: AbortSignal,
 ): Promise<Activity[]> {
+  if (USE_MOCK) {
+    const activities = mockActivities.filter(
+      (activity) =>
+        activity.date >= startWeek &&
+        activity.date <= endWeek,
+    );
+
+    return Promise.resolve(activities);
+  }
+
   const params = new URLSearchParams({
     startWeek,
     endWeek,
@@ -167,3 +194,4 @@ export function getUserActivities(
     },
   );
 }
+

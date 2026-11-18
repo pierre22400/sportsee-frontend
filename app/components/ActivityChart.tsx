@@ -30,7 +30,6 @@ type ActivityChartProps = {
   activities: readonly Activity[];
 };
 
-
 type WeeklyDistance = {
   monday: string;
   distance: number;
@@ -163,9 +162,7 @@ function formatPeriod(weeks: readonly WeeklyDistance[]): string {
  * Affiche les distances hebdomadaires reçues du Dashboard.
  * Conserve la navigation glissante sur quatre semaines.
  */
-export default function ActivityChart({
-  activities,
-}: ActivityChartProps) {
+export default function ActivityChart({ activities }: ActivityChartProps) {
   const weeklyData = buildWeeklyDistances(activities);
   const [windowStart, setWindowStart] = useState(() =>
     Math.max(0, weeklyData.length - WINDOW_SIZE),
