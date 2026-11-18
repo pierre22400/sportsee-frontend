@@ -35,6 +35,31 @@ const distanceFormatter = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 1,
 });
 
+type ProfileStatCardProps = {
+  title: string;
+  value: string;
+};
+
+/**
+ * SPORTSEE — CARTE STATISTIQUE DU PROFIL
+ *
+ * Affiche une statistique utilisateur dans une carte.
+ *
+ * Le titre et la valeur sont reçus via les props.
+ * La présentation reprend les classes CSS existantes.
+ *
+ * Ce composant ne réalise aucun appel API
+ * et ne modifie aucune donnée utilisateur.
+ */
+function ProfileStatCard({ title, value }: ProfileStatCardProps) {
+  return (
+    <article className={styles.statCard}>
+      <h3>{title}</h3>
+      <p>{value}</p>
+    </article>
+  );
+}
+
 /**
  * Affiche le profil et les statistiques réelles du sportif.
  *
@@ -188,30 +213,30 @@ export default function Profile() {
             </header>
 
             <div className={styles.statsGrid}>
-              <article className={styles.statCard}>
-                <h3>Temps total couru</h3>
-                <p>{totalDuration}</p>
-              </article>
+              <ProfileStatCard
+                title="Temps total couru"
+                value={totalDuration}
+              />
 
-              <article className={styles.statCard}>
-                <h3>Calories brûlées</h3>
-                <p>Non disponible</p>
-              </article>
+              <ProfileStatCard
+                title="Calories brûlées"
+                value="Non disponible"
+              />
 
-              <article className={styles.statCard}>
-                <h3>Distance totale parcourue</h3>
-                <p>{totalDistance} km</p>
-              </article>
+              <ProfileStatCard
+                title="Distance totale parcourue"
+                value={`${totalDistance} km`}
+              />
 
-              <article className={styles.statCard}>
-                <h3>Nombre de jours de repos</h3>
-                <p>Non disponible</p>
-              </article>
+              <ProfileStatCard
+                title="Nombre de jours de repos"
+                value="Non disponible"
+              />
 
-              <article className={styles.statCard}>
-                <h3>Nombre de sessions</h3>
-                <p>{statistics.totalSessions} sessions</p>
-              </article>
+              <ProfileStatCard
+                title="Nombre de sessions"
+                value={`${statistics.totalSessions} sessions`}
+              />
             </div>
           </section>
         </div>
