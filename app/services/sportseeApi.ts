@@ -33,7 +33,7 @@ const API_BASE_URL = "http://localhost:8000";
  *
  * L'authentification reste assurée par l'API.
  */
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 
 /**
